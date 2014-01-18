@@ -1,0 +1,29 @@
+﻿@model AspNetEmailExample.Models.SelectRecipientEditorViewModel
+<tr>
+    <td style="text-align:center">
+        @Html.CheckBoxFor(model => model.Selected)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.FullName)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Company)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.Email)
+    </td>
+    <td>
+        @Html.DisplayFor(model => model.LastMailedDate)
+    </td>
+
+    <td>
+        @Html.HiddenFor(model => model.MailRecipientId)
+    </td>
+
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.MailRecipientId }) |
+        @Html.ActionLink("Details", "Details", new { id = Model.MailRecipientId }) |
+        @Html.ActionLink("Delete", "Delete", new { id = Model.MailRecipientId })
+    </td>
+</tr>
+

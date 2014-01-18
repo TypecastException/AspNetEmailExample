@@ -1,0 +1,96 @@
+﻿@model AspNetEmailExample.Models.MailRecipientsViewModel
+
+@{
+    ViewBag.Title = "Email";
+}
+
+<h2>Send Email to Selected Recipients</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+@using (Html.BeginForm("SendMail", "MailRecipients", FormMethod.Post, new { encType = "multipart/form-data", name = "myform" }))
+{
+    // Add a "Check All" checkbox above the table:
+    <div>
+        <input type="checkbox" id="checkall" /><span>Check All</span>
+    </div>
+    
+    // Wrap the table in a named <div> so we can refer to it from JQuery:
+    <div id="checkboxes">
+
+        <table class="table">
+            <tr>
+                <th>
+                    @*This column will contain our checkboxes:*@
+                    Select
+                </th>
+                <th>
+                    @*This column will now hold a concatenation of the first/last names:*@
+                    Name
+                </th>
+                <th>
+                    Company
+                </th>
+                <th>
+                    Email
+                </th>
+                <th>
+                    Last Sent
+                </th>
+                <th></th>
+            </tr>
+            @* Our Table rows will be populated in the EditorTemplate: *@
+            @Html.EditorFor(model => model.MailRecipients)
+        </table>
+    </div>
+    <hr />
+    <br />
+    
+    //Add a submit button to the bottom of the form:
+    <input type="submit" name="operation" id="email" value="Email Selected" />
+}
+
+<div id="divProcessing">
+    <p>Processing, please wait . . . <img src="../../Content/ajax-loader.gif"></p>
+</div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+
+        <script type="text/javascript">
+
+            function toggleChecked(status) {
+                $("#checkboxes input").each(function () {
+                    $(this).prop("checked", status);
+                });
+            }
+
+            $(document).ready(function () {
+
+                // Grab a reference to the checkall checkbox:
+                var checkAllBox = $("#checkall");
+                var divProcessing = $("#divProcessing");
+
+                // Hide the animated Gif when page loads:
+                divProcessing.hide();
+                checkAllBox.prop('checked', true);
+
+
+                // Attach a handler for the checkAllBox click event:
+                checkAllBox.click(function () {
+                    var status = checkAllBox.prop('checked');
+                    toggleChecked(status);
+                });
+
+                $('#email').click(function () {
+                    // Required hack to get animated gif to run in IE:
+                    setTimeout(function () {
+                        divProcessing.show();
+                    }, 100);
+                    $('myform').submit();
+                });
+            });
+        </script>
+    }
